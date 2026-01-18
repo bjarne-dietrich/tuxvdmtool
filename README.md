@@ -8,7 +8,7 @@ Requires as of September 2025 the AsahiLinux downstream kernel. The original tip
 
 ## Copyright
 
-This is based on [macvdmtool](https://github.com/AsahiLinux/macvdmtool) without replicating portions of [ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher) and licensed under Apache-2.0.
+This is based on [macvdmtool](https://github.com/AsahiLinux/macvdmtool) and portions of [ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher) and licensed under Apache-2.0.
 
 * Copyright (C) 2019 osy86. All rights reserved.
 * Copyright (C) 2021 The Asahi Linux Contributors

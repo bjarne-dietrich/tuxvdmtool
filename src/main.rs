@@ -8,7 +8,8 @@ pub mod cd321x;
 
 use env_logger::Env;
 use log::{error};
-use std::{fs, process::ExitCode};
+use std::{process::ExitCode};
+use crate::cd321x::Device;
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -17,6 +18,7 @@ enum Error {
     Compatible,
     FeatureMissing,
     TypecController,
+    NoCableConnected,
     InvalidArgument,
     ReconnectTimeout,
     ControllerTimeout,
@@ -54,14 +56,6 @@ fn vdmtool() -> Result<()> {
         .arg_required_else_help(true)
         .get_matches();
 
-    let compat: Vec<u8> = fs::read("/proc/device-tree/compatible").map_err(Error::Io)?;
-    let compat = std::str::from_utf8(&compat[0..10]).map_err(Error::Utf8)?;
-    let (manufacturer, device) = compat.split_once(",").ok_or(Error::Compatible)?;
-    if manufacturer != "apple" {
-        error!("Host is not an Apple silicon system: \"{compat}\"");
-        return Err(Error::Compatible);
-    }
-
     let addr_str = matches.get_one::<String>("address").unwrap();
     let addr: u16;
     if addr_str.starts_with("0x") {
@@ -70,8 +64,7 @@ fn vdmtool() -> Result<()> {
         addr = u16::from_str_radix(addr_str, 10).unwrap();
     }
 
-    let code = device.to_uppercase();
-    let mut device = cd321x::Device::new(matches.get_one::<String>("bus").unwrap(), addr, code)?;
+    let mut device = Device::new(matches.get_one::<String>("bus").unwrap(), addr)?;
 
     match matches.subcommand() {
         Some(("dfu", _)) => {
