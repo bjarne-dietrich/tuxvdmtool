@@ -11,3 +11,6 @@ clap = { version = "3", features = ["cargo"] }
 log = "0.4.28"
 env_logger = { version = "0.11.8", default-features = false }
 i2cdev = "0.6"
+core-foundation = "0.10"
+core-foundation-sys = "0.8"
+io-kit-sys = "0.5"

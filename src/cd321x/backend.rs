@@ -4,12 +4,14 @@
  * Copyright The Asahi Linux Contributors
  */
 
-
+#[cfg(target_os = "macos")]
 pub mod macos_backend;
+#[cfg(target_os = "linux")]
 pub mod linux_backend;
 
 #[cfg(target_os = "macos")]
 use macos_backend::MacOSBackend;
+#[cfg(target_os = "linux")]
 use linux_backend::LinuxBackend;
 
 
@@ -23,8 +25,7 @@ pub fn create_backend(bus: &str, chip_addr: u16) -> Result<Box<dyn ControllerBac
 
     #[cfg(target_os = "macos")]
     {
-        let raw = unsafe { mac_init_device(bus, chip_addr) };
-        Ok(Box::new(MacOSBackend { raw }))
+        Ok(Box::new(MacOSBackend {}))
     }
 }
 
